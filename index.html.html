@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新聞快報(四年級練習)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f7f6;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; 
+        }
+        #output-area {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e9f7ef;
+            border: 1px solid #00a854;
+            border-radius: 6px;
+        }
+        #outputText {
+            white-space: pre-wrap;
+            font-size: 1.1em;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📝 新聞快報(四年級練習)</h2>
+    
+    <p>請依序填寫或選擇欄位內容。</p>
+    
+    <div class="input-group">
+        <label for="locationInput">0. 請輸入記者姓名：</label>
+        <input type="text" id="locationInput" value="" placeholder="例如：王曉光">
+    </div>
+    
+    <div class="input-group">
+        <label for="departmentInput">1. 請輸入名稱(人名)：</label>
+        <input type="text" id="departmentInput" value="" placeholder="例如：陳小華"> 
+    </div>
+
+    <div class="input-group">
+        <label for="statusSelect">2. 選擇獎項：</label>
+        <select id="statusSelect">
+            <option value="鏡頭最愛獎">鏡頭最愛獎</option>
+            <option value="團體合作領導獎">團體合作領導獎</option>
+            <option value="未來之星獎">未來之星獎</option>
+            <option value="科學小博士獎">科學小博士獎</option>
+        </select>
+    </div>
+    
+    <div class="input-group">
+        <label for="timelineSelect">3. 名次：</label>
+        <select id="timelineSelect">
+            <option value="金牌">金牌</option>
+            <option value="銀牌">銀牌</option>
+            <option value="銅牌">銅牌</option>
+        </select>
+    </div>
+
+    <div id="output-area">
+        <h3>📄 新聞結果：</h3>
+        <p id="outputText">請選擇/輸入上面的語詞來生成文本。</p>
+    </div>
+</div>
+
+<script>
+    // 固定的制式文本，使用 [[]] 作為替換標記
+    const template = 
+`2025年12月1日於光華國小辦理「未來之星」競賽，經過初選資格審查、觀眾投票及嚴格專業的評審結果，由[[DEPARTMENT]]同學獲得「[[STATUS]]」的「[[TIMELINE]]」。[[DEPARTMENT]]同學表示自己是第一次參加競賽，非常緊張！他很感謝師長的協助及好朋友的積極拉票，也承諾未來要成為校園同學的好榜樣，繼續努力。
+
+小記者[[LOCATION]]潮州報導`;
+
+    // 負責執行替換和顯示的函數
+    function generateText() {
+        // 1. 取得使用者輸入/選擇的值
+        const location = document.getElementById('locationInput').value; 
+        const department = document.getElementById('departmentInput').value;
+        const status = document.getElementById('statusSelect').value;
+        const timeline = document.getElementById('timelineSelect').value;
+        
+        // 2. 執行字串替換
+        let result = template
+            .replace('[[LOCATION]]', location)
+            .replaceAll('[[DEPARTMENT]]', department) 
+            .replace('[[STATUS]]', status)
+            .replace('[[TIMELINE]]', timeline);
+        
+        // 3. 顯示結果
+        document.getElementById('outputText').innerText = result;
+    }
+
+    // --- 事件監聽與初始載入設定 ---
+    
+    // 確保在所有 DOM 元素加載完畢後，才執行監聽和初始生成
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // 欄位 0 (地點) - 輸入框使用 'input' 事件
+        const locationInput = document.getElementById('locationInput');
+        locationInput.addEventListener('input', generateText);
+        
+        // 欄位 1 (人名) - 輸入框使用 'input' 事件
+        const departmentInput = document.getElementById('departmentInput');
+        departmentInput.addEventListener('input', generateText);
+        
+        // 欄位 2 (獎項) - 下拉選單使用 'change' 事件
+        const statusSelect = document.getElementById('statusSelect');
+        statusSelect.addEventListener('change', generateText);
+        
+        // 欄位 3 (名次) - 下拉選單使用 'change' 事件
+        const timelineSelect = document.getElementById('timelineSelect');
+        timelineSelect.addEventListener('change', generateText);
+        
+        // 初始載入時執行一次，顯示預設文本
+        generateText();
+    });
+
+</script>
+
+</body>
+</html>
